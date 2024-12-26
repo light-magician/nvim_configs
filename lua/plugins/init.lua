@@ -9,6 +9,12 @@ local plugins = {
         "codelldb",
         "rustfmt",
         "taplo",
+        "typescript-language-server",
+        "eslint-lsp",
+        "prettier",
+        "js-debug-adapter",
+        "clangd",
+        "clang-format"
       },
     },
   },
@@ -65,6 +71,13 @@ local plugins = {
     ft = "rust",
     init = function()
       vim.g.rustfmt_autosave = 1
+    end,
+  },
+  {
+    "nvimtools/none-ls.nvim",
+    event = "VeryLazy",
+    opts = function()
+      return require "configs.null-ls"
     end,
   },
 }
