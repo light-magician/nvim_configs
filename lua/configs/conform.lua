@@ -9,6 +9,7 @@ local options = {
     css = { "prettier" },
     html = { "prettier" },
     json = { "prettier" },
+    python = { "black" }, -- you can also add "isort" for import sorting
   },
 
   format_on_save = {

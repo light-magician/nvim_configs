@@ -4,6 +4,11 @@ local plugins = {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
+        -- Python tooling
+        "pyright", -- Python LSP
+        "ruff-lsp", -- Python linter
+        "black", -- Python formatter
+        "debugpy", -- Python debugger
         -- JavaScript/TypeScript tooling
         "typescript-language-server",
         "eslint-lsp",
@@ -37,7 +42,7 @@ local plugins = {
       "nvim-lua/plenary.nvim",
     },
     config = function()
-      local rt = require("rust-tools")
+      local rt = require "rust-tools"
       rt.setup(require "configs.rust-tools")
     end,
   },
@@ -58,17 +63,17 @@ local plugins = {
   },
   {
     "saecki/crates.nvim",
-    ft = {"toml"},
+    ft = { "toml" },
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
     config = function()
-      require("crates").setup({
+      require("crates").setup {
         null_ls = {
           enabled = true,
           name = "crates.nvim",
         },
-      })
+      }
     end,
   },
   {
@@ -102,20 +107,22 @@ local plugins = {
     "nvim-treesitter/nvim-treesitter",
     opts = {
       ensure_installed = {
-        -- defaults 
+        -- defaults
         "vim",
         "lua",
-        -- web dev 
+        -- web dev
         "html",
         "css",
         "javascript",
         "typescript",
         "tsx",
         "json",
-        -- "vue", "svelte",  -- uncomment if needed
+        -- "vue", "svelte",
         -- Rust
         "rust",
         "toml",
+        -- Python
+        "python",
       },
       autotag = {
         enable = true,
@@ -149,7 +156,6 @@ local plugins = {
       return options
     end,
   },
-  -- Optional but recommended for better development experience
   {
     "folke/trouble.nvim",
     cmd = { "Trouble", "TroubleToggle" },
