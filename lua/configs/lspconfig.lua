@@ -1,12 +1,10 @@
--- load defaults from NvChad
+-- load defaults from NvCad
 require("nvchad.configs.lspconfig").defaults()
-
 local lspconfig = require "lspconfig"
 local nvlsp = require "nvchad.configs.lspconfig"
 
 -- Base servers with default config
 local servers = { "html", "cssls", "eslint", "clangd" }
-
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = nvlsp.on_attach,
@@ -15,8 +13,8 @@ for _, lsp in ipairs(servers) do
   }
 end
 
--- TypeScript setup
-lspconfig.tsserver.setup {
+-- TypeScript setup (using ts_ls instead of tsserver)
+lspconfig.ts_ls.setup {
   on_attach = nvlsp.on_attach,
   on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,
@@ -71,7 +69,6 @@ lspconfig.pyright.setup {
     -- Detect virtualenv
     local python_path = vim.fn.exepath "python3" or vim.fn.exepath "python"
     local venv = vim.fn.getenv "VIRTUAL_ENV"
-
     if venv then
       config.settings.python.pythonPath = venv .. "/bin/python"
     else
@@ -80,15 +77,17 @@ lspconfig.pyright.setup {
   end,
 }
 
--- Ruff (Python linter) setup
-lspconfig.ruff_lsp.setup {
+-- Ruff setup (replacing ruff_lsp)
+lspconfig.ruff.setup {
   on_attach = nvlsp.on_attach,
   on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,
-  init_options = {
-    settings = {
-      -- Ruff settings
-      args = {},
+  settings = {
+    ruff = {
+      lint = {
+        -- Ruff linter settings
+        run = "onType", -- or "onSave"
+      },
     },
   },
 }

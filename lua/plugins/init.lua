@@ -6,7 +6,7 @@ local plugins = {
       ensure_installed = {
         -- Python tooling
         "pyright",
-        "ruff-lsp",
+        "ruff",
         "black",
         "debugpy",
         -- JavaScript/TypeScript tooling
