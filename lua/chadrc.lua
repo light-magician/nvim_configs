@@ -6,7 +6,7 @@
 local M = {}
 
 M.base46 = {
-  theme = "penumbra_light",
+  theme = "melange",
 
   -- enable this when you want it to be transparent
   hl_override = {

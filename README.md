@@ -2,6 +2,12 @@
 neo vim configurations
 this is configured with NV chad
 
+![alt text](cap-forest.png)
+![alt text](cap-cream.jpg)
+![alt text](cap-black.png)
+![alt text](cap-white.png)
+![alt text](cap-rocky.png)
+
 # NVChad Python Development Setup
 
 ## Configuration Files
