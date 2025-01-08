@@ -5,10 +5,10 @@ local plugins = {
     opts = {
       ensure_installed = {
         -- Python tooling
-        "pyright", -- Python LSP
-        "ruff-lsp", -- Python linter
-        "black", -- Python formatter
-        "debugpy", -- Python debugger
+        "pyright",
+        "ruff-lsp",
+        "black",
+        "debugpy",
         -- JavaScript/TypeScript tooling
         "typescript-language-server",
         "eslint-lsp",
@@ -34,6 +34,64 @@ local plugins = {
       require "configs.lspconfig"
     end,
   },
+  -- Themes
+  {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+  },
+  {
+    "projekt0n/github-nvim-theme",
+    lazy = false,
+    priority = 1000,
+  },
+  {
+    "rebelot/kanagawa.nvim",
+    priority = 1000,
+  },
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
+    priority = 1000,
+  },
+  {
+    "EdenEast/nightfox.nvim",
+    priority = 1000,
+    config = function()
+      require("nightfox").setup {
+        options = {
+          styles = {
+            comments = "italic",
+            keywords = "bold",
+            types = "italic,bold",
+          },
+        },
+      }
+    end,
+  },
+  {
+    "nyoom-engineering/oxocarbon.nvim",
+    priority = 1000,
+  },
+  {
+    "sainnhe/everforest",
+    priority = 1000,
+  },
+  {
+    "sainnhe/edge",
+    priority = 1000,
+  },
+  {
+    "arcticicestudio/nord-vim",
+    priority = 1000,
+  },
+  -- Development tools
   {
     "simrat39/rust-tools.nvim",
     ft = "rust",
@@ -117,7 +175,6 @@ local plugins = {
         "typescript",
         "tsx",
         "json",
-        -- "vue", "svelte",
         -- Rust
         "rust",
         "toml",
@@ -166,10 +223,7 @@ local plugins = {
   {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
-    opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-    },
+    opts = {},
   },
 }
 
