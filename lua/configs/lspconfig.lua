@@ -4,7 +4,7 @@ local lspconfig = require "lspconfig"
 local nvlsp = require "nvchad.configs.lspconfig"
 
 -- Base servers with default config
-local servers = { "html", "cssls", "eslint", "clangd" }
+local servers = { "html", "cssls", "eslint" }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = nvlsp.on_attach,
@@ -12,6 +12,16 @@ for _, lsp in ipairs(servers) do
     capabilities = nvlsp.capabilities,
   }
 end
+
+-- Clangd setup
+lspconfig.clangd.setup {
+  on_attach = nvlsp.on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+  init_options = {
+    fallbackFlags = { "-I/usr/include/linux" },
+  },
+}
 
 -- TypeScript setup (using ts_ls instead of tsserver)
 lspconfig.ts_ls.setup {
