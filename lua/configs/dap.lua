@@ -1,7 +1,7 @@
 -- lua/configs/dap.lua
 local dap = require("dap")
 
--- Setup CODELLDB
+-- Setup CODELLDB for Rust and C/C++
 dap.adapters.codelldb = {
   type = 'server',
   port = "${port}",
@@ -11,6 +11,21 @@ dap.adapters.codelldb = {
   }
 }
 
+-- Setup Node adapter for JavaScript and TypeScript
+dap.adapters.node2 = {
+  type = 'executable',
+  command = 'node',
+  args = {vim.fn.stdpath("data") .. '/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js', '${port}'},
+}
+
+-- Python adapter
+dap.adapters.python = {
+  type = 'executable',
+  command = vim.fn.stdpath("data") .. '/mason/packages/debugpy/venv/bin/python',
+  args = {'-m', 'debugpy.adapter'},
+}
+
+-- Rust configurations
 dap.configurations.rust = {
   {
     name = "Launch file",
@@ -45,28 +60,6 @@ dap.configurations.rust = {
         end
       end
       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-    end,
-    cwd = '${workspaceFolder}',
-    stopOnEntry = false,
-    args = function()
-      local args_string = vim.fn.input('Arguments: ')
-      return vim.split(args_string, " ")
-    end,
-    runInTerminal = false,
-  },
-  {
-    name = "Launch test",
-    type = "codelldb",
-    request = "launch",
-    program = function()
-      local cargo_path = vim.fs.find('Cargo.toml', {
-        upward = true,
-        stop = vim.loop.os_homedir(),
-      })[1]
-      if cargo_path then
-        return vim.fn.input('Path to test executable: ', vim.fs.dirname(cargo_path) .. '/target/debug/deps/', 'file')
-      end
-      return vim.fn.input('Path to test executable: ', vim.fn.getcwd() .. '/', 'file')
     end,
     cwd = '${workspaceFolder}',
     stopOnEntry = false,
@@ -132,6 +125,95 @@ dap.configurations.rust = {
     cwd = "${workspaceFolder}",
     stopOnEntry = false,
   },
+}
+
+-- Python configurations
+dap.configurations.python = {
+  {
+    type = 'python',
+    request = 'launch',
+    name = 'Launch file',
+    program = "${file}",
+    pythonPath = function()
+      -- Try to detect python path from active virtual environment
+      if vim.env.VIRTUAL_ENV then
+        return vim.env.VIRTUAL_ENV .. '/bin/python'
+      end
+      -- Return default python from PATH
+      return 'python3'
+    end,
+  },
+  {
+    type = 'python',
+    request = 'launch',
+    name = 'Launch with arguments',
+    program = "${file}",
+    args = function()
+      local args_string = vim.fn.input('Arguments: ')
+      return vim.split(args_string, " ")
+    end,
+    pythonPath = function()
+      if vim.env.VIRTUAL_ENV then
+        return vim.env.VIRTUAL_ENV .. '/bin/python'
+      end
+      return 'python3'
+    end,
+  },
+  {
+    type = 'python',
+    request = 'launch',
+    name = 'Debug Tests (pytest)',
+    module = 'pytest',
+    args = function()
+      local args_string = vim.fn.input('pytest args: ')
+      return vim.split(args_string, " ")
+    end,
+    pythonPath = function()
+      if vim.env.VIRTUAL_ENV then
+        return vim.env.VIRTUAL_ENV .. '/bin/python'
+      end
+      return 'python3'
+    end,
+  },
+}
+
+-- JavaScript and TypeScript configurations
+dap.configurations.javascript = {
+  {
+    type = 'node2',
+    request = 'launch',
+    name = 'Launch file',
+    program = '${file}',
+    cwd = '${workspaceFolder}',
+    sourceMaps = true,
+    protocol = 'inspector',
+    console = 'integratedTerminal',
+  },
+  {
+    type = 'node2',
+    request = 'attach',
+    name = 'Attach to process',
+    processId = require('dap.utils').pick_process,
+    cwd = '${workspaceFolder}',
+    sourceMaps = true,
+  },
+}
+dap.configurations.typescript = dap.configurations.javascript
+
+-- Gleam configurations (using Node adapter as a proxy since there's no native Gleam debugger)
+dap.configurations.gleam = {
+  {
+    type = 'node2',
+    request = 'launch',
+    name = 'Debug Gleam (via Node)',
+    program = function()
+      return vim.fn.input('Path to compiled JS: ', vim.fn.getcwd() .. '/build/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    sourceMaps = true,
+    protocol = 'inspector',
+    console = 'integratedTerminal',
+  }
 }
 
 -- Debug keymaps

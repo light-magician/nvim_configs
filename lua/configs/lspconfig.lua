@@ -13,6 +13,19 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+-- Gleam setup with specific configuration
+lspconfig.gleam.setup {
+  on_attach = nvlsp.on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+  settings = {
+    gleam = {
+      checkOnSave = true,
+      includeTests = true,
+    }
+  }
+}
+
 -- Clangd setup
 lspconfig.clangd.setup {
   on_attach = nvlsp.on_attach,

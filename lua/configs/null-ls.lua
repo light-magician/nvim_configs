@@ -7,6 +7,8 @@ local sources = {
   formatting.prettier,
   formatting.clang_format,
   diagnostics.eslint,
+  -- Python-specific tools
+  diagnostics.mypy, -- Enhanced type checking for Python
 }
 
 local options = {

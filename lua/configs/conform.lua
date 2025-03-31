@@ -9,7 +9,8 @@ local options = {
     css = { "prettier" },
     html = { "prettier" },
     json = { "prettier" },
-    python = { "black" }, -- you can also add "isort" for import sorting
+    python = { "isort", "black" }, -- isort first, then black
+    gleam = { "gleam" }, -- use the Gleam compiler's format feature
   },
 
   format_on_save = {
