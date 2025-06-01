@@ -19,6 +19,11 @@ local plugins = {
         "cssls",
         "html-lsp",
         "tailwindcss-language-server",
+        "stylelint-lsp",
+        "emmet-ls",
+        "json-lsp",
+        "eslint_d",
+        "typescript-language-server",
         -- Rust tooling
         "rust-analyzer",
         "codelldb",
@@ -169,6 +174,114 @@ local plugins = {
     "shaunsingh/moonlight.nvim",
     priority = 1000,
   },
+  -- Premium light/minimal themes
+  {
+    "projekt0n/caret.nvim",
+    lazy = false,
+    priority = 1000,
+  },
+  {
+    "AlexvZyl/nordic.nvim",
+    lazy = false,
+    priority = 1000,
+  },
+  {
+    "Mofiqul/vscode.nvim",
+    lazy = false,
+    priority = 1000,
+  },
+  {
+    "sainnhe/gruvbox-material",
+    priority = 1000,
+  },
+  {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+  },
+  {
+    "Mofiqul/adwaita.nvim",
+    lazy = false,
+    priority = 1000,
+  },
+  {
+    "ribru17/bamboo.nvim",
+    priority = 1000,
+  },
+  {
+    "kepano/flexoki-neovim",
+    name = "flexoki",
+    priority = 1000,
+  },
+  {
+    "miikanissi/modus-themes.nvim",
+    priority = 1000,
+  },
+  {
+    "craftzdog/solarized-osaka.nvim",
+    priority = 1000,
+  },
+  {
+    "luisiacc/gruvbox-baby",
+    priority = 1000,
+  },
+  {
+    "olimorris/onedarkpro.nvim",
+    priority = 1000,
+  },
+  -- Theme management
+  {
+    "zaldih/themery.nvim",
+    lazy = false,
+    config = function()
+      require("themery").setup({
+        themes = {
+          -- Base46 themes (NvChad)
+          {
+            name = "Flexoki Light",
+            colorscheme = function() require("base46").load_theme("flexoki-light") end,
+          },
+          {
+            name = "Blossom Light", 
+            colorscheme = function() require("base46").load_theme("blossom_light") end,
+          },
+          {
+            name = "One Light",
+            colorscheme = function() require("base46").load_theme("one_light") end,
+          },
+          {
+            name = "Monochrome",
+            colorscheme = function() require("base46").load_theme("monochrome") end,
+          },
+          {
+            name = "Material Lighter",
+            colorscheme = function() require("base46").load_theme("material-lighter") end,
+          },
+          -- External colorschemes
+          {
+            name = "VS Code",
+            colorscheme = "vscode",
+          },
+          {
+            name = "Adwaita",
+            colorscheme = "adwaita",
+          },
+          {
+            name = "Nordic",
+            colorscheme = "nordic",
+          },
+          {
+            name = "Tokyo Night",
+            colorscheme = "tokyonight",
+          },
+          {
+            name = "Catppuccin Latte",
+            colorscheme = "catppuccin-latte",
+          },
+        },
+        livePreview = true,
+      })
+    end,
+  },
   -- Development tools
   {
     "simrat39/rust-tools.nvim",
@@ -234,13 +347,35 @@ local plugins = {
       "typescript",
       "typescriptreact",
       "html",
+      "xml",
+      "jsx",
+      "tsx",
+      "vue",
+      "svelte",
     },
     config = function()
       require("nvim-ts-autotag").setup()
     end,
   },
   {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {
+      settings = {
+        -- spawn additional tsserver instance to calculate diagnostics on it
+        separate_diagnostic_server = true,
+        -- specify a list of plugins to load by tsserver, e.g., for support `styled-components`
+        tsserver_plugins = {
+          "@styled/typescript-styled-plugin",
+          "typescript-styled-plugin",
+          "@vue/typescript-plugin"
+        },
+      },
+    },
+  },
+  {
     "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
     opts = {
       ensure_installed = {
         -- defaults
@@ -253,6 +388,11 @@ local plugins = {
         "typescript",
         "tsx",
         "json",
+        "json5",
+        "jsonc",
+        "jsdoc",
+        "scss",
+        "regex",
         -- Rust
         "rust",
         "toml",
@@ -260,15 +400,29 @@ local plugins = {
         "python",
         -- Gleam
         "gleam",
-      },
-      autotag = {
-        enable = true,
+        -- Configuration files
+        "bash",
+        "yaml",
+        "dockerfile",
+        "gitignore",
+        "gitattributes",
+        "dot", -- for .env files
       },
       highlight = {
         enable = true,
         use_languagetree = true,
+        additional_vim_regex_highlighting = false,
       },
       indent = { enable = true },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = "<C-space>",
+          node_incremental = "<C-space>",
+          scope_incremental = "<C-s>",
+          node_decremental = "<M-space>",
+        },
+      },
     },
   },
   {

@@ -26,17 +26,31 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
--- Make hover windows more readable with transparent themes
-vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
-  callback = function()
-    -- Set better background for floating windows
-    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1a1b26", blend = 10 })
-    vim.api.nvim_set_hl(0, "FloatBorder", { bg = "#1a1b26", fg = "#89b4fa", blend = 10 })
-  end,
-})
+-- Add proper color support
+vim.opt.termguicolors = true
 
 -- Add keymap to show diagnostics in floating window that's easy to copy from
 vim.keymap.set('n', '<leader>e', function()
   vim.diagnostic.open_float({ scope = "line", focusable = true })
 end, { desc = "Show diagnostics in floating window" })
+
+-- Improve filetype detection for special files
+vim.filetype.add({
+  filename = {
+    [".env"] = "sh",
+    [".env.local"] = "sh",
+    [".env.development"] = "sh",
+    [".env.production"] = "sh",
+    [".env.test"] = "sh",
+    ["package.json"] = "json",
+    ["package-lock.json"] = "json",
+    [".eslintrc"] = "json",
+    [".prettierrc"] = "json",
+    ["tsconfig.json"] = "jsonc",
+    ["jsconfig.json"] = "jsonc",
+  },
+  pattern = {
+    ["%.env%.[%w_.-]+"] = "sh",
+    ["%.config/[%w_.-]+"] = "json",
+  },
+})

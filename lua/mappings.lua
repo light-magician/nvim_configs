@@ -66,3 +66,11 @@ map("n", "<leader>jn", "<cmd>JupyniumStartSync<CR>", { desc = "Start Jupynium sy
 map("n", "<leader>js", "<cmd>JupyniumStopSync<CR>", { desc = "Stop Jupynium sync" })
 map("n", "<leader>jc", "<cmd>JupyniumClearOutput<CR>", { desc = "Clear Jupyter outputs" })
 map("n", "<leader>jr", "<cmd>JupyniumExecuteCell<CR>", { desc = "Run Jupyter cell" })
+
+-- Toggle transparency
+map("n", "<leader>tt", function()
+  local chadrc = require("chadrc")
+  chadrc.base46.transparency = not chadrc.base46.transparency
+  require("base46").load_theme(chadrc.base46.theme)
+  vim.notify("Transparency: " .. (chadrc.base46.transparency and "ON" or "OFF"))
+end, { desc = "Toggle transparency" })
